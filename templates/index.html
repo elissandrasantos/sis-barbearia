@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Agendamento de Barbearia</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Agendamento de Barbearia</h1>
+        <div class="navigation">
+            <a href="{{ url_for('agenda') }}">Ver Agenda</a>
+        </div>
+        {% if error_message %}
+            <p class="error">{{ error_message }}</p>
+        {% endif %}
+        <form method="POST" class="form-agendamento">
+            <div class="form-group">
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" name="nome" required>
+            </div>
+
+            <div class="form-group">
+                <label for="telefone">Telefone:</label>
+                <input type="tel" id="telefone" name="telefone" placeholder="(xx) xxxxx-xxxx" maxlength="15" oninput="maskPhone(event)" required>
+            </div>
+
+            <div class="form-group">
+                <label>Serviços:</label>
+                <div class="checkbox-group">
+                    {% for servico, preco in service_prices.items() %}
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="{{ servico }}" name="servicos" value="{{ servico }}" onchange="updatePrice()">
+                            <label for="{{ servico }}">{{ servico.capitalize() }} - R$ {{ '%.2f' % preco }}</label>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="horario">Horário:</label>
+                <select id="horario" name="horario" required>
+                    {% for time in available_times %}
+                        <option value="{{ time }}">{{ time }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group total-price">
+                <p><strong>Total:</strong> R$ <span id="totalPrice">0.00</span></p>
+            </div>
+
+            <button type="submit">Agendar</button>
+        </form>
+    </div>
+
+    <script type="text/javascript">
+        var servicePrices = {{ service_prices | tojson }};
+    </script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

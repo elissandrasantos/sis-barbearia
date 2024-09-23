@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmação de Agendamento</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Agendamento Confirmado</h1>
+        <div class="confirmation-details">
+            <p><strong>Nome:</strong> {{ nome }}</p>
+            <p><strong>Telefone:</strong> {{ telefone }}</p>
+            <p><strong>Serviços Selecionados:</strong></p>
+            <ul>
+                {% for servico in servicos %}
+                    <li>{{ servico.capitalize() }} - R$ {{ '%.2f' % service_prices[servico] }}</li>
+                {% endfor %}
+            </ul>
+            <p><strong>Horário:</strong> {{ horario }}</p>
+            <p class="total-price"><strong>Preço Total:</strong> R$ {{ '%.2f' % total_price }}</p>
+        </div>
+        <a href="/" class="button-link">Fazer Novo Agendamento</a>
+    </div>
+</body>
+</html>

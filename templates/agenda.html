@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Agenda de Agendamentos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Agenda de Agendamentos</h1>
+        <div class="navigation">
+            <a href="{{ url_for('agendamento') }}">Novo Agendamento</a>
+        </div>
+        {% if appointments %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Telefone</th>
+                        <th>Horário</th>
+                        <th>Serviços</th>
+                        <th>Preço Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for appointment in appointments %}
+                    <tr>
+                        <td>{{ appointment.nome }}</td>
+                        <td>{{ appointment.telefone }}</td>
+                        <td>{{ appointment.horario }}</td>
+                        <td>
+                            {% for servico in appointment.servicos %}
+                                {{ servico.capitalize() }}{% if not loop.last %}, {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>R$ {{ '%.2f' % appointment.total_price }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Não há agendamentos.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
